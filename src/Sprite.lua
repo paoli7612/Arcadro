@@ -1,12 +1,11 @@
-function Sprite(x, y)
+function Sprite(boss, x, y)
     local sprite = {
         x = x,
         y = y
     }
 
     function sprite:draw()
-        love.graphics.polygon('fill', {x-30, y, x, y+10, x+30, y, x, y-10})
-        --love.graphics.circle('fill', x, y, 40)
+        love.graphics.polygon('fill', totile(sprite.x, sprite.y))
     end
 
     function sprite:update()
