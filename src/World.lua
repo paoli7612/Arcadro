@@ -2,13 +2,10 @@ function World()
     local world = {}
 
     function conv(x, y)
-        local a = x*W + WIDTH/2
-        local b = -y*H + HEIGHT/2
-        if x%2 == 0 then
-            b = b + h
-        end
-        a = a - x*h
-        return a, b
+        local sx = (x - y) * w
+        local sy = -(x + y) * h
+
+        return sx + WIDTH / 2, sy + HEIGHT / 2
     end
 
     function totile(x, y)
@@ -23,8 +20,8 @@ function World()
 
     function world.draw_tile(x, y)
         love.graphics.polygon('line', totile(x, y))
-        local sx, sy =  conv(x, y)
-        love.graphics.print(x.." "..y,sx, sy, 0, 1, 1, 10, 10)
+        --local sx, sy =  conv(x, y)
+        --love.graphics.print(x.." "..y,sx, sy, 0, 1, 1, 10, 10)
     end
 
     function world:draw()

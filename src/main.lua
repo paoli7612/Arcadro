@@ -20,3 +20,7 @@ function love.draw()
     boss.player.print()
 end
 
+
+function love.keypressed( key, scancode, isrepeat )
+    boss.keypressed(key, scancode, isrepeat)
+end
