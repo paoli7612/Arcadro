@@ -6,6 +6,7 @@ function Sprite(x, y)
 
     function sprite:draw()
         love.graphics.polygon('fill', {x-30, y, x, y+10, x+30, y, x, y-10})
+        --love.graphics.circle('fill', x, y, 40)
     end
 
     function sprite:update()
