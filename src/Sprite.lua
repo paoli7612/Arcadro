@@ -8,9 +8,14 @@ function Sprite(x, y)
         love.graphics.polygon('fill', {x-30, y, x, y+10, x+30, y, x, y-10})
     end
 
-    function sprite.update()
+    function sprite:update()
         
     end
+
+    function sprite:print()
+        return "Sprite ("..sprite.x.." "..sprite.y..")"
+    end
+
 
     return sprite
 end

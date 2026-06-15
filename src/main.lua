@@ -10,6 +10,6 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.print("Ciao mondo", 23, 230)
+    love.graphics.print(player.print(), 20, 20)
     player.draw()
 end
