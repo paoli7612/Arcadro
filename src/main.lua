@@ -1,9 +1,9 @@
-W = 64
-H = 48
+W = 48
+H = 32
 w = W/2
 h = H/2
 WIDTH = W * 20
-HEIGHT = H * 16
+HEIGHT = H * 18
 local Boss = require('Boss')
 
 function love.load()

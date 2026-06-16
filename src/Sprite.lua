@@ -5,6 +5,7 @@ function Sprite(boss, x, y)
     }
 
     function sprite:draw()
+        love.graphics.setColor(1,0,1)
         love.graphics.polygon('fill', totile(sprite.x, sprite.y))
     end
 

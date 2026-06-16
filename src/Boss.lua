@@ -7,7 +7,7 @@ function Boss()
     }
 
     function boss:load()
-        boss.player = Sprite(boss, 0, 0)
+        boss.player = Sprite(boss, 1, 0)
     end
 
     function boss:draw()
@@ -16,14 +16,15 @@ function Boss()
     end
 
     function boss:keypressed(key, scancode, isrepeat)
-        if key == 'w' then
-            boss.player.y = boss.player.y + 1
-        elseif key == 'a' then
-            boss.player.x = boss.player.x - 1
-        elseif key == 's' then
-            boss.player.y = boss.player.y - 1
-        elseif key == 'd' then
-            boss.player.x = boss.player.x + 1
+        local x = boss.player.x
+        local y = boss.player.y
+        if key == 'up' then y = y + 1
+        elseif key == 'down' then y = y - 1
+        elseif key == 'left' then x = x - 1
+        elseif key == 'right' then x = x + 1 end
+        if boss.world.empty(1, x, y) then
+            boss.player.x = x
+            boss.player.y = y
         end
     end
 
