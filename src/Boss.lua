@@ -5,7 +5,7 @@ local Interface = require('Interface')
 function Boss()
     local boss = {
         world = World(),
-        interface = Interface(),
+        interface = Interface(boss),
         running = true
     }
 
@@ -30,7 +30,7 @@ function Boss()
     end
 
     function boss.keypressed(key, scancode, isrepeat)
-        if key == 'escape' then
+        if key == 'i' then
             boss.running = not boss.running
         end
 

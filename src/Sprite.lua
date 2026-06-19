@@ -1,8 +1,11 @@
+local Inventory = require("Inventory")
+
 function Sprite(boss, x, y)
     local sprite = {
         boss = boss,
         x = x,
-        y = y
+        y = y,
+        inventory = Inventory()
     }
 
     function sprite.draw()
@@ -10,7 +13,11 @@ function Sprite(boss, x, y)
     end
 
     function sprite.pickup_item()
-        return sprite.boss.world.remove_item(sprite.x, sprite.y)
+        local item = sprite.boss.world.remove_item(sprite.x, sprite.y)
+        if item then
+            sprite.inventory.add(item)
+        end
+        return item
     end
 
     function sprite.update(dt)

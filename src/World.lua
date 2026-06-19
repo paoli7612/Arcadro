@@ -19,7 +19,6 @@ function World()
     end
 
     function world.new_item(code, x, y)
-        print(x, y)
         if not world.items[y] then
             world.items[y] = {}
         end
