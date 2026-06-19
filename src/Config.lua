@@ -1,0 +1,9 @@
+local Config = {}
+
+Config.TILE_SIZE = 32
+Config.WORLD_WIDTH_TILES = 40
+Config.WORLD_HEIGHT_TILES = 25
+Config.WINDOW_WIDTH = Config.WORLD_WIDTH_TILES * Config.TILE_SIZE
+Config.WINDOW_HEIGHT = Config.WORLD_HEIGHT_TILES * Config.TILE_SIZE
+
+return Config

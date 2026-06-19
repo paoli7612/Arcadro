@@ -1,22 +1,24 @@
 function Sprite(boss, x, y)
     local sprite = {
+        boss = boss,
         x = x,
         y = y
     }
 
-    function sprite:draw()
-        love.graphics.setColor(1,0,1)
-        love.graphics.polygon('fill', totile(sprite.x, sprite.y))
+    function sprite.draw()
+        love.graphics.rectangle('fill', sprite.x*config.TILE_SIZE, sprite.y*config.TILE_SIZE, config.TILE_SIZE, config.TILE_SIZE)
     end
 
-    function sprite:update()
-        
+    function sprite.pickup_item()
+        return sprite.boss.world.remove_item(sprite.x, sprite.y)
     end
 
-    function sprite:print()
+    function sprite.update(dt)
+    end
+
+    function sprite.print()
         return "Sprite ("..sprite.x.." "..sprite.y..")"
     end
-
 
     return sprite
 end

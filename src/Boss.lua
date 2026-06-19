@@ -1,30 +1,43 @@
-local Sprite = require('Sprite')
+local Player = require('Player')
 local World = require('World')
+local Interface = require('Interface')
 
 function Boss()
     local boss = {
-        world = World()
+        world = World(),
+        interface = Interface(),
+        running = true
     }
 
-    function boss:load()
-        boss.player = Sprite(boss, 1, 0)
+    function boss.load()
+        boss.player = Player(boss, 4, 4)
     end
 
-    function boss:draw()
+    function boss.draw()
         boss.world.draw()
         boss.player.draw()
+        if not boss.running then
+            boss.interface.draw()
+        end
     end
 
-    function boss:keypressed(key, scancode, isrepeat)
-        local x = boss.player.x
-        local y = boss.player.y
-        if key == 'up' then y = y + 1
-        elseif key == 'down' then y = y - 1
-        elseif key == 'left' then x = x - 1
-        elseif key == 'right' then x = x + 1 end
-        if boss.world.empty(1, x, y) then
-            boss.player.x = x
-            boss.player.y = y
+    function boss.update(dt)
+        if boss.running then
+            boss.player.update(dt)
+        else
+            boss.interface.update(dt)
+        end
+    end
+
+    function boss.keypressed(key, scancode, isrepeat)
+        if key == 'escape' then
+            boss.running = not boss.running
+        end
+
+        if boss.running then
+            boss.player.keypressed(key, scancode, isrepeat)
+        else
+            boss.interface.keypressed(key, scancode, isrepeat)
         end
     end
 

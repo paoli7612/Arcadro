@@ -1,0 +1,32 @@
+{
+    "items": {
+        "a001": {
+            "name": "Health Potion",
+            "description": "Restores 50 HP when consumed.",
+            "effect": {
+                "type": "heal",
+                "value": 50
+            },
+            "image": "a001_health_potion"
+        },
+        "a002": {
+            "name": "Mana Potion",
+            "description": "Restores 30 MP when consumed.",
+            "effect": {
+                "type": "mana",
+                "value": 30
+            },
+            "image": "a002_mana_potion"
+        },
+        "a003": {
+            "name": "Sword of Flames",
+            "description": "A powerful sword that deals extra fire damage.",
+            "effect": {
+                "type": "damage",
+                "value": 20,
+                "element": "fire"
+            },
+            "image": "a003_sword_of_flames"
+        }
+    }
+}

@@ -1,95 +1,73 @@
-function totile(x, y)
-    local a, b = conv(x, y)
-    return {
-        a-w+1, b,
-        a+1, b+h,
-        a+w, b+1,
-        a, b-h+1
-    }
-end
+local Item = require('Item')
 
 function World()
     local world = {}
     world.matrix = {}
+    world.items = {}
 
-    local size = 11 -- deve essere dispari
-    local min = -10
-    local max = 10
-
-    -- riempi tutto di muri
-    for i = min, max do
-        world.matrix[i] = {}
-        for j = min, max do
-            world.matrix[i][j] = 1
-        end
-    end
-
-    local dirs = {
-        { 2, 0 },
-        { -2, 0 },
-        { 0, 2 },
-        { 0, -2 }
-    }
-
-    local function shuffle(t)
-        for i = #t, 2, -1 do
-            local r = love.math.random(i)
-            t[i], t[r] = t[r], t[i]
-        end
-    end
-
-    local function carve(x, y)
-        world.matrix[x][y] = 0
-
-        shuffle(dirs)
-
-        for _, d in ipairs(dirs) do
-            local nx = x + d[1]
-            local ny = y + d[2]
-
-            if nx > min and nx < max and ny > min and ny < max then
-                if world.matrix[nx][ny] == 1 then
-                    -- apre il muro tra cella attuale e prossima
-                    world.matrix[x + d[1] / 2][y + d[2] / 2] = 0
-                    carve(nx, ny)
-                end
+    function world.load()
+        for y=0, config.WORLD_HEIGHT_TILES - 1, 1 do
+            world.matrix[y] = {}
+            world.items[y] = {}
+            for x=0, config.WORLD_WIDTH_TILES - 1, 1 do
+                world.matrix[y][x] = 0
             end
         end
+        world.new_item('a001', love.math.random(0, config.WORLD_WIDTH_TILES - 1), love.math.random(0, config.WORLD_HEIGHT_TILES - 1))
+        world.new_item('a002', love.math.random(0, config.WORLD_WIDTH_TILES - 1), love.math.random(0, config.WORLD_HEIGHT_TILES - 1))
+        world.new_item('a003', love.math.random(0, config.WORLD_WIDTH_TILES - 1), love.math.random(0, config.WORLD_HEIGHT_TILES - 1))
     end
 
-    carve(-9, -9)
-
-    function conv(x, y)
-        local sx = (x - y) * w
-        local sy = -(x + y) * h
-
-        return sx + WIDTH / 2, sy + HEIGHT / 2
+    function world.new_item(code, x, y)
+        print(x, y)
+        if not world.items[y] then
+            world.items[y] = {}
+        end
+        world.items[y][x] = Item(code, x, y)
     end
 
-
-    function world.draw_tile(x, y)
-        love.graphics.polygon('line', totile(x, y))
-        --local sx, sy =  conv(x, y)
-        --love.graphics.print(x.." "..y,sx, sy, 0, 1, 1, 10, 10)
-    end
-
-    function world:draw()
+    function world.draw()
         love.graphics.setColor(1,1,1)
-        for y=-10, 10, 1 do
-            for x=-10, 10, 1 do
-                world.draw_tile(x, y)
-                if world.matrix[y][x] == 1 then
-                    love.graphics.polygon('fill', totile(x, y))
-                end
+        for y=0, config.WORLD_HEIGHT_TILES - 1, 1 do
+            love.graphics.line(0, y*config.TILE_SIZE, config.WORLD_WIDTH_TILES*config.TILE_SIZE, y*config.TILE_SIZE)
+        end
+        for x=0, config.WORLD_WIDTH_TILES - 1, 1 do
+            love.graphics.line(x*config.TILE_SIZE, 0, x*config.TILE_SIZE, config.WORLD_HEIGHT_TILES*config.TILE_SIZE)
+        end
+        for _, row in pairs(world.items) do
+            for _, item in pairs(row) do
+                item.draw()
             end
         end
     end
 
-    function world:empty(x, y)
-        print(y, x)
+    function world.empty(x, y)
+        print("Checking if tile is empty at. ", x, y)
+        if x < 0 or x >= config.WORLD_WIDTH_TILES or
+           y < 0 or y >= config.WORLD_HEIGHT_TILES then
+            return false
+        end
         return world.matrix[y][x] == 0
     end
 
+    function world.item(x, y)
+        if world.items[y] then
+            return world.items[y][x]
+        end
+        return nil
+    end
+
+    function world.remove_item(x, y)
+        if not world.items[y] then
+            return nil
+        end
+
+        local item = world.items[y][x]
+        world.items[y][x] = nil
+        return item
+    end
+
+    world.load()
     return world
 end
 
