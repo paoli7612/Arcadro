@@ -1,13 +1,13 @@
-local Player = require('Player')
+local Player = require('Sprites/Player')
 local World = require('World')
 local Interface = require('Interface')
 
 function Boss()
     local boss = {
-        world = World(),
         interface = Interface(boss),
         running = true
     }
+    boss.world = World(boss)
 
     function boss.load()
         boss.player = Player(boss, 4, 4)
@@ -22,6 +22,7 @@ function Boss()
     end
 
     function boss.update(dt)
+        boss.world.update(dt)
         if boss.running then
             boss.player.update(dt)
         else

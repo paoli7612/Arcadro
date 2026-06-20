@@ -1,9 +1,13 @@
 local Item = require('Item')
+local Wall = require('Sprites/Wall')
+local Npc = require('Sprites/Npc')
 
-function World()
+function World(boss)
     local world = {}
     world.matrix = {}
     world.items = {}
+    world.walls = {}
+    world.npcs = {}
 
     function world.load()
         for y=0, config.WORLD_HEIGHT_TILES - 1, 1 do
@@ -13,7 +17,25 @@ function World()
                 world.matrix[y][x] = 0
             end
         end
+        -- new item
         world.new_item('a001', love.math.random(0, config.WORLD_WIDTH_TILES - 1), love.math.random(0, config.WORLD_HEIGHT_TILES - 1))
+        -- new walls
+        for i=1, 10, 1 do
+            local x = love.math.random(3, config.WORLD_WIDTH_TILES - 9)
+            local y = love.math.random(3, (config.WORLD_HEIGHT_TILES - 3)/2)*2
+            for j = 1, 6, 1 do
+                world.walls[#world.walls + 1] = Wall(boss, x, y)
+                x = x + 1
+            end
+        end
+        -- new NPCs
+        for i=1, 5, 1 do
+            local x = love.math.random(0, config.WORLD_WIDTH_TILES - 1)
+            local y = love.math.random(0, config.WORLD_HEIGHT_TILES - 1)
+            if world.empty(x, y) then
+                world.npcs[#world.npcs + 1] = Npc(boss, x, y, true)
+            end
+        end
     end
 
     function world.new_item(code, x, y)
@@ -21,6 +43,12 @@ function World()
             world.items[y] = {}
         end
         world.items[y][x] = Item(code, x, y)
+    end
+
+    function world.update(dt)
+        for _, npc in pairs(world.npcs) do
+            npc.update(dt)
+        end
     end
 
     function world.draw()
@@ -36,14 +64,26 @@ function World()
                 item.draw()
             end
         end
+        for _, wall in pairs(world.walls) do
+            wall.draw()
+        end
+        for _, npc in pairs(world.npcs) do
+            npc.draw()
+        end
     end
 
     function world.empty(x, y)
-        print("Checking if tile is empty at. ", x, y)
         if x < 0 or x >= config.WORLD_WIDTH_TILES or
            y < 0 or y >= config.WORLD_HEIGHT_TILES then
             return false
         end
+
+        for _, wall in pairs(world.walls) do
+            if wall.x == x and wall.y == y then
+                return false
+            end
+        end
+
         return world.matrix[y][x] == 0
     end
 

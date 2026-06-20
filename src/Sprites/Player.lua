@@ -1,7 +1,7 @@
-local Sprite = require('Sprite')
+local Sprite = require('Sprites/Sprite')
 
 function Player(boss, x, y)
-    local player = Sprite(boss, x, y)
+    local player = Sprite(boss, x, y, 'blue')
     player.moveTimer = 0
     player.moveDelay = 0.12
 
