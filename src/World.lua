@@ -14,8 +14,6 @@ function World()
             end
         end
         world.new_item('a001', love.math.random(0, config.WORLD_WIDTH_TILES - 1), love.math.random(0, config.WORLD_HEIGHT_TILES - 1))
-        world.new_item('a002', love.math.random(0, config.WORLD_WIDTH_TILES - 1), love.math.random(0, config.WORLD_HEIGHT_TILES - 1))
-        world.new_item('a003', love.math.random(0, config.WORLD_WIDTH_TILES - 1), love.math.random(0, config.WORLD_HEIGHT_TILES - 1))
     end
 
     function world.new_item(code, x, y)
